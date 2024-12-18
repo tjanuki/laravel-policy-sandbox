@@ -13,12 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Gate::define('admin-access', function (User $user) {
-            return $user->is_admin;
+        Gate::define('access-admin', function (User $user) {
+            return $user->hasRole('admin');
         });
 
         Gate::define('manage-article', function (User $user, $article) {
-            return Gate::allows('admin-access') || $user->id === $article->user_id;
+            return Gate::allows('access-admin') || $user->id === $article->user_id;
         });
     }
 
