@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Context;
 
 class User extends Authenticatable
 {
@@ -54,11 +55,19 @@ class User extends Authenticatable
 
     public function hasRole(string $role) : bool
     {
+        if (Context::hasHidden('roles')) {
+            return in_array($role, Context::getHidden('roles'));
+        }
+
         return $this->roles->contains('name', $role);
     }
 
     public function hasAnyRoles(array $roles) : bool
     {
+        if (Context::hasHidden('roles')) {
+            return !empty(array_intersect($roles, Context::getHidden('roles')));
+        }
+
         return $this->roles()->whereIn('name', $roles)->exists();
     }
 }
