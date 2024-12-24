@@ -12,9 +12,9 @@ class UserController
         return User::get();
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        return User::find($id);
+        return $user;
     }
 
     public function store(Request $request)
@@ -22,15 +22,15 @@ class UserController
         return User::create($request->all());
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::find($id);
         $user->update($request->all());
         return $user;
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        return User::destroy($id);
+        $user->delete();
+        return response()->json(null, 204);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
 //        Gate::define('manage-article', function (User $user, $article) {
 //            return Gate::allows('access-admin') || $user->id === $article->user_id;
 //        });
+
+
+        Gate::policy(User::class, UserPolicy::class);
 
         Blade::directive('role', function ($expression) {
             return "<?php if(auth()->check() && auth()->user()->hasAnyRoles([$expression])): ?>";
