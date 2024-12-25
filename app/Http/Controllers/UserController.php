@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController
 {
     public function index()
     {
-        return User::get();
+        return User::visibleTo(Auth::user())->get();
     }
 
     public function show(User $user)

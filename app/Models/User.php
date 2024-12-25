@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Gate;
 
 class User extends Authenticatable
 {
@@ -70,4 +72,14 @@ class User extends Authenticatable
 
         return $this->roles()->whereIn('name', $roles)->exists();
     }
+
+    public static function scopeVisibleTo(Builder $builder, User $user)
+    {
+        if (Gate::allows('viewAny', User::class)) {
+            return $builder;
+        }
+
+        return $builder->where('id', $user->id);
+    }
+
 }

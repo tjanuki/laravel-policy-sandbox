@@ -17,8 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware('can:viewAny,App\Models\User')->group(function () {
-        Route::get('/users', [UserController::class, 'index']);
+    Route::middleware('can:viewAny,App\Models\User')->name('users.')->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('index');
         Route::get('/users/{user}', [UserController::class, 'show'])
             ->middleware('can:view,user');
         Route::put('/users/{user}', [UserController::class, 'update'])
