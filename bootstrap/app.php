@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleAccess::class,
+            'not.found' => \App\Http\Middleware\NotFoundOnDenied::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
